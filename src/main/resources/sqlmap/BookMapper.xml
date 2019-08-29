@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.train.ssm.dao.BookMapper">
+<!--    resultType本应该使用Book的全类名，但是我们已经在
+        mybatis的全局配置文件中使用了别名
+        id为接口的方法名字-->
+    <resultMap id="BaseResultMap" type="book">
+        <id property="bookId" column="book_id"></id>
+        <result property="bookName" column="book_name"></result>
+        <result property="bookPrice" column="book_price"></result>
+        <result property="bookPublisher" column="book_publisher"></result>
+        <result property="bookAuthor" column="book_author"></result>
+    </resultMap>
+    <select id="findBooks" resultType="book">
+        select * from books
+    </select>
+
+    <select id="findBookById" resultType="book" parameterType="java.lang.Integer">
+        selete * from books where book_id = #{bookId}
+    </select>
+
+    <select id="findBooksSpe" resultMap="BaseResultMap">
+        select * from books where book_name = #{bookName}
+    </select>
+
+    <insert id="addBook" useGeneratedKeys="true" keyProperty="book_id">
+        insert into books
+        (book_id,book_name,book_price,book_author,book_publisher)
+        values
+        (null,#{bookName},#{bookPrice},#{bookAuthor},#{bookPublisher})
+    </insert>
+    <update id="updateBook" parameterType="book">
+        update books set
+        book_name = #{bookName},
+        book_price = #{bookPrice},
+        book_author = #{bookAuthor},
+        book_publisher = #{bookPublisher}
+        where book_id = #{bookId}
+    </update>
+    <delete id="deleteBook">
+        delete from books where book_id=#{bookId}
+    </delete>
+</mapper>

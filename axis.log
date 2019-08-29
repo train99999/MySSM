@@ -1,0 +1,2 @@
+2019-08-26 16:06:49,280 0      [           main] INFO         com.mchange.v2.log.MLog  - MLog clients using log4j logging.
+2019-08-26 16:06:50,029 749    [           main] INFO  m.mchange.v2.c3p0.C3P0Registry  - Initializing c3p0-0.9.1.2 [built 21-May-2007 15:04:56; debug? true; trace: 10]

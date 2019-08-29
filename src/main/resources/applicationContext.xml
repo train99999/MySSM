@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+<!--    扫描所有的包注解，但不包含Controller注解-->
+    <context:component-scan base-package="org.train">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+<!--    加载db.properties配置文件-->
+    <context:property-placeholder location="classpath:db.properties"></context:property-placeholder>
+<!--    配置数据源-->
+<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+    <property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+    <property name="driverClass" value="${jdbc.driverClass}"></property>
+    <property name="user" value="${jdbc.user}"></property>
+    <property name="password" value="${jdbc.password}"></property>
+</bean>
+<!--配置和mybatis的整合
+
+    设置sqlSessionFactory的bean实现类为mybatis与spring整合jar包中的
+    SqlSessionFactoryBean类，在其中需要注入两个参数，一个是mybatis的
+    全局配置文件，一个是上面的配置的数据源bean
+-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+<!--        加载mybatis配置文件-->
+        <property name="configLocation" value="classpath:SqlMapConfig.xml"></property>
+<!--            加载数据源-->
+        <property name="dataSource" ref="dataSource"></property>
+<!--        加载mybatis的映射文件-->
+        <property name="mapperLocations" value="classpath:sqlmap/*xml"></property>
+    </bean>
+
+<!--    扫描配置器，将mybatis的接口实现加入到ioc容器中-->
+   <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+       <property name="basePackage" value="org.train.ssm.dao"></property>
+   </bean>
+
+</beans>
