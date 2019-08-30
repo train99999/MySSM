@@ -49,7 +49,8 @@ public class BookController {
     public Msg findBooksSpe(Book book){
         List<Book> booksSpe = bookService.findBooksSpe(book.getBookName());
         Msg success = Msg.success(booksSpe);
-        if (booksSpe == null){
+        System.out.println(booksSpe);
+        if (booksSpe == null||booksSpe.size()==0){
             return Msg.fail();
         }
         return success;
