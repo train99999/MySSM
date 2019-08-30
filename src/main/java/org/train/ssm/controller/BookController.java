@@ -39,8 +39,9 @@ public class BookController {
     @ResponseBody
     @RequestMapping(value="addBook",method = RequestMethod.POST)
     public Msg addBook(Book book){
-        bookService.addBook(book);
-        return Msg.success();
+         bookService.addBook(book);
+        PageInfo pageInfo = new PageInfo();
+        return Msg.success(pageInfo);
     }
 
     //这个方法是查询书籍的方法
@@ -49,7 +50,6 @@ public class BookController {
     public Msg findBooksSpe(Book book){
         List<Book> booksSpe = bookService.findBooksSpe(book.getBookName());
         Msg success = Msg.success(booksSpe);
-        System.out.println(booksSpe);
         if (booksSpe == null||booksSpe.size()==0){
             return Msg.fail();
         }

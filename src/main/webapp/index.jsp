@@ -108,7 +108,7 @@
                     <form>
                         <div class="form-group">
                             <label for="recipient-name" class="control-label">请您输入书籍名称</label>
-                            <input type="text" class="form-control"  name="bookName" placeholder="请输入您要查询的书籍名称">
+                            <input type="text" class="form-control"  name="bookName" placeholder="请输入书籍关键字">
                         </div>
                     </form>
                 </div>
@@ -188,9 +188,11 @@
 </div>
 <script>
     $(function () {
+        alert("数据如果没有出来请耐心等待几秒")
+    });
+    $(function () {
         toPage(1);
     });
-
     function toPage(number) {
         $("#navId").empty();
         $.ajax({
@@ -304,6 +306,7 @@
     });
     //这个是点击查询书籍按钮是弹出模态框的单击事件
     $("#findBook").click(function () {
+        $("#findModal form")[0].reset();
         $("#findModal").modal({
             backdrop:"static"
         });
@@ -334,7 +337,7 @@
                if(result.code == 100){
                    $("#AddModal").modal("hide");
                    alert("添加成功")
-                   toPage(result.pageInfo.pages);
+                   toPage(1);
                }else{
                    alert("添加失败");
                    $("#AddModal").modal("hide");
@@ -352,8 +355,10 @@
             cache: true,
             async: false,
             success:function (result){
+                var list1 = result.books;
                 if(result.code == 100){
                     findBooksSpe(result);
+                    alert("总共查询到"+$(list1).length+"条记录")
                     $("#findModal").modal("hide");
                 }else{
                     alert("书籍不存在");

@@ -22,7 +22,7 @@
     </select>
 
     <select id="findBooksSpe" resultMap="BaseResultMap">
-        select * from books where book_name = #{bookName}
+        select * from books where book_name like CONCAT(CONCAT('%', #{bookName}), '%');
     </select>
 
     <insert id="addBook" useGeneratedKeys="true" keyProperty="book_id">
